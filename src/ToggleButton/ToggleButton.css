@@ -1,0 +1,22 @@
+.toggle-container {
+    position: relative;
+    width: 100px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: white;
+
+    border: none;
+    padding: 0px;
+    z-index: 2;
+}
+
+.toggle-circle {
+    position: relative;
+    transform: translateX(-5px) translateY(-5px);
+    width: calc(50% + 10px);
+    height: calc(100% + 10px) ;
+    background: linear-gradient(to right, yellow, orange);
+    border-radius: 50px;
+
+    transition: left 0.25s ease-in-out;
+}

@@ -4,7 +4,8 @@ header {
     height: 96px;
 
     display: grid;
-    grid-template-columns: 15% 70% 15%;
+    grid-template-columns: 1fr 500px 1fr;
+    box-sizing: border-box;
     justify-items: center;
     align-items: center;
 }

@@ -1,54 +1,50 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router';
+
+import { PageContext } from '../Context/PageContext.jsx';
 
 import "./Navbar.css"
 
 function Navbar() {
-
-    const links = [
-        {name : "Acceuil", path: "/"},
-        {name : "Mes Projets", path: "/projects"},
-        {name : "Mes Certifications", path: "/certifications"},
-    ]
-
-    const [idHoverLink, setIdHoverLink] = useState()
-    const [idActiveLink, setIdActiveLink] = useState()
-
-    function styleNavbarComp(id){
-        return {
-            width: `${100/links.length}%`, 
-            left: `${100/links.length*id}%`
-        }
-    }
+    const { currentPath, setCurrentPath } = useContext(PageContext)
+    const [ hoverPath, setHoverPath ] = useState(currentPath)
 
     useEffect(()=>{
-        links.forEach((link,index) => {
-            if(link.path.slice(1) == window.location.hash.slice(2)){
-                setIdActiveLink(index)
-                setIdHoverLink(index)
-            }
-        })
-    },[])
+        setHoverPath(currentPath)
+    },[currentPath])
 
+    console.log(currentPath)
+    
+    const pages = {
+        "/": "Acceuil",
+        "/projects": "Mes Projets",
+        "/certifications": "Mes Certifications"
+    }
+    
+
+    function styleNavbarComp(path){
+        return {
+            width: `${100/Object.keys(pages).length}%`, 
+            left: `${100/Object.keys(pages).length*Object.keys(pages).indexOf(path)}%`
+        }
+    }
 
     return ( 
         <>
             <div className="navbar-container">
                 
-                {idHoverLink != undefined && idActiveLink != undefined &&
-                    <>
-                        <div className="navbar-active" style={styleNavbarComp(idActiveLink)}></div>
-                        <div className="navbar-hover" style={styleNavbarComp(idHoverLink)}></div>
-                    </>  
-                }
-
-                {links.map((link, index) => (
+                <>
+                    <div className="navbar-active" style={styleNavbarComp(currentPath)}></div>
+                    <div className="navbar-hover" style={styleNavbarComp(hoverPath)}></div>
+                </>  
+                
+                {Object.entries(pages).map(([path, name], index) => (
                     <Link className="navbar-link" 
                     key={index} 
-                    onMouseEnter={()=>{setIdHoverLink(index)}} 
-                    onMouseLeave={()=>{setIdHoverLink(idActiveLink)}}
-                    onClick={()=>{setIdActiveLink(index);}} 
-                    to={link.path}>{link.name}</Link>
+                    onMouseEnter={()=>{setHoverPath(path)}} 
+                    onMouseLeave={()=>{setHoverPath(currentPath)}}
+                    onClick={()=>{setCurrentPath(path)}} 
+                    to={path}>{name}</Link>
                     )
                 )}
 
